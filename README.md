@@ -1,76 +1,22 @@
-# AltStore
+# AltStore-iPad
+A version of AltStore that has full capabilities on iPad! May have a few hiccups here and there but has full screen support (no more letterboxing) and multitasking support.
 
-> AltStore is an alternative app store for non-jailbroken iOS devices. 
+## How to install AltStore and AltServer:
+To install this version of AltStore, make sure you already have the normal version of AltStore installed on your iPad as well as AltServer installed on your computer. You can follow a guide for how to do so here on their [official website](https://altstore.io/faq/). The rest of this guide assumes you are currently connected to AltServer on your computer, you can double check that that is the case by refreshing AltStore on your iPad.
 
-[![Swift Version](https://img.shields.io/badge/swift-5.0-orange.svg)](https://swift.org/)
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+## How to install AltStore for iPad
+The easiest way to install AltStore for iPad is to click [**This Link**](https://delta-skins.github.io/appinstall.html?altstore://install?url=https://github.com/jawshoeadan/AltStore-iPad/releases/download/v1.3.4/AltStore_iPad_v1.3.4.ipa) on your iPad. 
 
-AltStore is an iOS application that allows you to sideload other apps (.ipa files) onto your iOS device with just your Apple ID. AltStore resigns apps with your personal development certificate and sends them to a desktop app, AltServer, which installs the resigned apps back to your device using iTunes WiFi sync. To prevent apps from expiring, AltStore will also periodically refresh your apps in the background when on the same WiFi as AltServer.
+As long as you are connected to AltServer and have the current version of AltStore installed, the iPad version of AltStore will replace the current one you have. If you like, you can also download the .IPA file from the releases tab and sideload it like you would any other app for AltStore.
 
-For the initial release, I focused on building a solid foundation for distributing my own apps — primarily Delta, [my all-in-one emulator for iOS](https://github.com/rileytestut/Delta). Now that Delta has been released, however, I'm beginning work on adding support for *anyone* to list and distribute their apps through AltStore (contributions welcome! 🙂).
+### Screenshots of AltStore for iPad in action
 
-## Features
-- Resigns and installs any app with your Apple ID
-- Installs apps over WiFi using AltServer
-- Refreshes apps periodically in the background to prevent them from expiring (when on same WiFi as AltServer)
-- Handles app updates directly through AltStore 
+![Screenshot1](https://github.com/jawshoeadan/AltStore-iPad/blob/master/Screenshots/IMG_1288.PNG)
+![Screenshot2](https://github.com/jawshoeadan/AltStore-iPad/blob/master/Screenshots/IMG_1289.PNG)
+![Screenshot3](https://github.com/jawshoeadan/AltStore-iPad/blob/master/Screenshots/IMG_1290.PNG)
 
-## Requirements
-- Xcode 11
-- iOS 12.2+ (AltStore)
-- macOS 10.14.4+ (AltServer)
-- Swift 5+
+It is worth mentioning that this version will still completely work on iPhones as if nothing has changed so you can also install it on your iPhone if you wish. Also, I will not be posting Beta or Alpha versions of AltStore with iPad support as it is stealing from Riley. Go support him on his [Patreon](https://www.patreon.com/rileytestut) for access to all the Beta or Alpha features.
 
-Why iOS 12.2+ and macOS 10.14.4+? Doing so allows me to distribute all AltStore apps without embedding Swift libraries inside them. This helps me afford bandwidth costs by reducing download sizes by roughly 30%, but also noticeably improves how long it takes to install/refresh apps with AltStore. If you're compiling AltStore and/or AltServer yourself, however, you should be able to lower their deployment targets to iOS 12.0 and macOS 10.14.0, respectively, without any issues.
+Go follow [@rileytestut](https://twitter.com/rileytestut) on Twitter and check out [AltStore](https://github.com/rileytestut/AltStore) on GitHub. Thank you so much to Riley for making such an amazing app!
 
-## Project Overview
 
-### AltStore
-AltStore is just a regular, sandboxed iOS application. The AltStore app target contains the vast majority of AltStore's functionality, including all the logic for downloading and updating apps through AltStore. AltStore makes heavy use of standard iOS frameworks and technologies most iOS developers are familiar with, such as:
-* Core Data
-* Storyboards/Nibs
-* Auto Layout
-* Background App Refresh
-* Network.framework (new in iOS 12)
-
-### AltServer
-AltServer is also just a regular, sandboxed macOS application. AltServer is significantly less complex than AltStore though, and for that reason consists of only a handful of files.
-
-### AltKit
-AltKit is a shared framework that includes common code between AltStore and AltServer.
-
-### AltSign
-AltSign is my internal framework used by both AltStore and AltServer to communicate with Apple's servers and resign apps. For more info, check the [AltSign repo](https://github.com/rileytestut/altsign).
-
-### Roxas
-Roxas is my internal framework used across all my iOS projects, developed to simplify a variety of common tasks used in iOS development. For more info, check the [Roxas repo](https://github.com/rileytestut/roxas).
-
-## Compilation Instructions
-AltStore and AltServer are both fairly straightforward to compile and run if you're already an iOS or macOS developer. To compile AltStore and/or AltServer:
-
-1. Clone the repository 
-	``` 
-	git clone https://github.com/rileytestut/AltStore.git
-	```
-2. Update submodules: 
-	```
-	cd AltStore 
-	git submodule update --init --recursive
-	```
-3. Open `AltStore.xcworkspace` and select the AltStore project in the project navigator. On the `Signing & Capabilities` tab, change the team from `Yvette Testut` to your own account.
-4. **(AltStore only)** Change the value for `ALTDeviceID` in the Info.plist to your device's UDID. Normally, AltServer embeds the device's UDID in AltStore's Info.plist during installation. When running through Xcode you'll need to set the value yourself or else AltStore won't resign (or even install) apps for the proper device.
-5. **(AltStore only)** Change the value for `ALTServerID` in the Info.plist to your AltServer's serverID. This is embedded by AltServer during installation to help AltStore distinguish between multiple AltServers on the same network, and you can find this by using a Bonjour browsing application and noting the serverID advertised by AltServer. This isn't strictly necessary, because if AltStore can't find the AltServer with the embedded serverID it still falls back to trying another AltServer. However, this will help in cases where there are multiple AltServers running (plus the error messages are more helpful).
-6. **(AltServer only)** Install Carthage (if you use Homebrew, you can do this with `brew install carthage`). Then run `carthage update` in the root directory of the repository.
-7. Build + run app! 🎉
-
-## Licensing
-
-Due to the licensing of some dependencies used by AltStore, I have no choice but to distribute AltStore under the **AGPLv3 license**. That being said, my goal for AltStore is for it to be an open source project *anyone* can use without restrictions, so I explicitly give permission for anyone to use, modify, and distribute all *my* original code for this project in any form, with or without attribution, without fear of legal consequences (dependencies remain under their original licenses, however).
-
-## Contact Me
-
-* Email: riley@rileytestut.com
-* Twitter: [@rileytestut](https://twitter.com/rileytestut)
-
-Questions about AltStore in general? Make sure to read the FAQ at https://altstore.io/faq/
